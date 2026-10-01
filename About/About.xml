@@ -2,7 +2,7 @@
 <ModMetaData>
 	<name>Multiplayer The Grand Library of 「Mirrored」 Patch</name>
 	<author>Keullaeseu</author>
-	<packageId>keullaeseu.multiplayerthegrandlibraryofmirroredpatch</packageId>
+	<packageId>keullaeseu.mp.heimu.RimMomotalk</packageId>
 	<modVersion>1.0.0.0</modVersion>
 	<url>https://github.com/Keullaeseu/Multiplayer-The-Grand-Library-of-Mirrored-Patch</url>
 	<description>Provides multiplayer support for The Grand Library of 「Mirrored」 mod by heimu.</description>
