@@ -19,8 +19,12 @@ internal static class MirroredReflection
     internal static FieldInfo ProgressInstanceField { get; private set; }
     internal static MethodInfo IsScenarioBranchBlockedMethod { get; private set; }
     internal static FieldInfo CurrentScenarioNameField { get; private set; }
+    internal static FieldInfo NoBackgroundOnCloseField { get; private set; }
+    internal static MethodInfo ClearSharedDialogueStateMethod { get; private set; }
+    internal static FieldInfo BackgroundWindowsField { get; private set; }
 
     internal static MethodInfo RaiseSelectedMethod { get; private set; }
+    internal static FieldInfo LastSelectedField { get; private set; }
     internal static FieldInfo SelectedScenarioNameField { get; private set; }
     internal static FieldInfo SelectedContactIdField { get; private set; }
     internal static FieldInfo SelectedLabelField { get; private set; }
@@ -53,8 +57,19 @@ internal static class MirroredReflection
         ProgressInstanceField = AccessTools.DeclaredField(ProgressType, "Instance");
         IsScenarioBranchBlockedMethod = AccessTools.DeclaredMethod(ProgressType, "IsScenarioBranchBlocked");
         CurrentScenarioNameField = AccessTools.DeclaredField(ChatWindowType, "CurrentScenarioName");
+        NoBackgroundOnCloseField = AccessTools.DeclaredField(ChatWindowType, "NoBackgroundOnClose");
+        ClearSharedDialogueStateMethod = AccessTools.DeclaredMethod(ChatWindowType, "ClearSharedDialogueState");
 
-        if (ProgressInstanceField == null || IsScenarioBranchBlockedMethod == null || CurrentScenarioNameField == null)
+        var backgroundChatType = AccessTools.TypeByName("RimMomotalk.MomoBackgroundChat");
+        if (backgroundChatType != null)
+            BackgroundWindowsField = AccessTools.DeclaredField(backgroundChatType, "backgroundWindows");
+
+        if (ProgressInstanceField == null
+            || IsScenarioBranchBlockedMethod == null
+            || CurrentScenarioNameField == null
+            || NoBackgroundOnCloseField == null
+            || ClearSharedDialogueStateMethod == null
+            || BackgroundWindowsField == null)
             Log.Warning(
                 $"{TheGrandLibraryOfMirrored.LogPrefix} Could not cache reflection for blocked branch windows, auto-close disabled.");
     }
@@ -72,6 +87,7 @@ internal static class MirroredReflection
         }
 
         RaiseSelectedMethod = AccessTools.DeclaredMethod(optionEventsType, "RaiseSelected");
+        LastSelectedField = AccessTools.DeclaredField(optionEventsType, "LastSelected");
         SelectedScenarioNameField = AccessTools.DeclaredField(OptionSelectedType, "scenarioName");
         SelectedContactIdField = AccessTools.DeclaredField(OptionSelectedType, "contactId");
         SelectedLabelField = AccessTools.DeclaredField(OptionSelectedType, "label");

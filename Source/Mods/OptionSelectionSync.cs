@@ -78,4 +78,21 @@ internal static class OptionSelectionSync
             Log.Error($"{TheGrandLibraryOfMirrored.LogPrefix} Failed to replay synced option selection: {exception}");
         }
     }
+
+    /// <summary>
+    ///     Clears the stale last selection when the game changes so it never leaks
+    ///     into the newly loaded game. Subscriber delegates belong to other mods
+    ///     and are intentionally left alone.
+    /// </summary>
+    internal static void ClearLastSelected()
+    {
+        try
+        {
+            MirroredReflection.LastSelectedField?.SetValue(null, null);
+        }
+        catch (Exception exception)
+        {
+            Log.Error($"{TheGrandLibraryOfMirrored.LogPrefix} Failed to clear last option selection: {exception}");
+        }
+    }
 }

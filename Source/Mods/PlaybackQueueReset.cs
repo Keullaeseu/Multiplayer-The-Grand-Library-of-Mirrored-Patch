@@ -4,10 +4,11 @@ using Verse;
 namespace MultiplayerTheGrandLibraryOfMirroredPatch.Source.Mods;
 
 /// <summary>
-///     Clears the trigger scenario queue when the game changes.
+///     Clears per-game UI state when the game changes.
 ///     <c>RimMomotalk.MomoBackgroundChat.ResetForLoadedGame</c> already clears shared chat state,
 ///     but the playback queue in <c>RimMomotalk.DebugChatActions</c> is static and would
-///     otherwise leak pending scenarios into the newly loaded game.
+///     otherwise leak pending scenarios into the newly loaded game. The stale
+///     <c>RimMomotalk.MomoOptionEvents.LastSelected</c> is cleared for the same reason.
 /// </summary>
 internal static class PlaybackQueueReset
 {
@@ -21,6 +22,7 @@ internal static class PlaybackQueueReset
                 MirroredReflection.PlaybackQueueClearMethod?.Invoke(queue, null);
             MirroredReflection.PlaybackActiveField?.SetValue(null, false);
             MirroredReflection.ActiveScenarioKeyField?.SetValue(null, null);
+            OptionSelectionSync.ClearLastSelected();
         }
         catch (Exception exception)
         {
